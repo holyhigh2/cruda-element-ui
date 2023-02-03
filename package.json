@@ -1,5 +1,5 @@
 {
-  "name": "@cruda/element-ui",
+  "name": "cruda-element-ui",
   "version": "1.0.0",
   "description": "A Cruda adapter for element-ui",
   "main": "index.js",
