@@ -1,15 +1,15 @@
-# @cruda/element-ui
+# cruda-element-ui
 Cruda element-ui适配器。
 
 ## Demo
-- [element-ui](https://stackblitz.com/edit/func-js?file=index.ts)
+- [element-ui](https://stackblitz.com/edit/cruda-element-ui?file=src%2FApp.vue)
 
 ## 使用
 ### 1. 安装
 ```js
 // 安装CRUD
 import request from 'axios'
-import CRUD from '@cruda/element-ui'
+import CRUD from 'cruda-element-ui'
 // 通常request总是会使用封装后的axios实例
 Vue.use(CRUD, { request: request })
 ```
@@ -76,7 +76,7 @@ const $cruds = useCruds(vm, restURL)
 ### 4. HOOK
 ```js
 //CRUD提供多种回调钩子以满足不同的业务场景
-import CRUD from '@holyhigh/crud-vue'
+import CRUD from 'cruda-element-ui'
 
 export default {
   crud: '/api/users',
@@ -115,7 +115,7 @@ export default {
   </div>
 </template>
 <script>
-  import CRUD, { lookUpCrud } from '@holyhigh/crud-vue/element-ui'
+  import CRUD, { lookUpCrud } from 'cruda-element-ui'
   import { each } from '@holyhigh/func.js/collection'
 
   export default {
@@ -161,7 +161,7 @@ export default {
 ## 可导出
 
 ```js
-import CRUD,{...} from '@holyhigh/crud-vue/element-ui'
+import CRUD,{...} from 'cruda-element-ui'
 ```
 
 - CRUD 

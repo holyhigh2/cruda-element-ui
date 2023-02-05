@@ -1,15 +1,15 @@
-# @cruda/element-ui
+# cruda-element-ui
 A Cruda adapter for element-ui.
 
 ## Demo
-- [element-ui](https://stackblitz.com/edit/func-js?file=index.ts)
+- [element-ui](https://stackblitz.com/edit/cruda-element-ui?file=src%2FApp.vue)
 
 ## Usage
 ### 1. Install
 ```js
 // Usually init cruda in main.js
 import request from 'axios'
-import CRUD from '@cruda/element-ui'
+import CRUD from 'cruda-element-ui'
 // set requester
 Vue.use(CRUD, { request: request })
 ```
@@ -71,7 +71,7 @@ const $cruds = useCruds(vm, restURL)
 ```
 ### 4. HOOKs
 ```js
-import CRUD from '@cruda/element-ui'
+import CRUD from 'cruda-element-ui'
 export default {
   crud: '/api/users',
   methods:{
@@ -107,7 +107,7 @@ The first thing you create a CRUD component is to get `$crud`. Use `lookUpCrud()
   </div>
 </template>
 <script>
-  import CRUD, { lookUpCrud } from '@cruda/element-ui'
+  import CRUD, { lookUpCrud } from 'cruda-element-ui'
   import { each } from '@holyhigh/func.js/collection'
 
   export default {
@@ -150,7 +150,7 @@ export default {
 ## Exportable
 
 ```js
-import CRUD,{...} from '@cruda/element-ui'
+import CRUD,{...} from 'cruda-element-ui'
 ```
 
 - CRUD 
