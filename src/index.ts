@@ -107,9 +107,10 @@ CRUD.install = function (Vue: Record<string, any>, options) {
     validate: Function
     [k: string]: any
   }) {
-    const valid = await formEl.validate()
-    if (!valid) {
-      throw new Error('Invalid form data')
+    try {
+      await formEl.validate()
+    } catch (e) {
+      throw e
     }
     return submit.call(this, null)
   }
