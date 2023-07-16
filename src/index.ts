@@ -1,7 +1,7 @@
 /**
  * @author holyhigh
  */
-import { each } from '@holyhigh/func.js'
+import { each } from 'myfx/collection'
 
 import CRUD, { crudError, RestUrl } from 'cruda'
 import * as packageInfo from '../package.json'
@@ -100,20 +100,6 @@ CRUD.install = function (Vue: Record<string, any>, options) {
   }
   CRUD.request = options.request
   globalVue = Vue
-
-  //重载submit
-  const submit = CRUD.prototype.submit
-  CRUD.prototype.submit = async function (formEl: {
-    validate: Function
-    [k: string]: any
-  }) {
-    try {
-      await formEl.validate()
-    } catch (e) {
-      throw e
-    }
-    return submit.call(this, null)
-  }
 
   // 注入curd入口。
   // 以此简化在每个使用场景需要引入CRUD的过程
