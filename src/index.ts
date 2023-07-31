@@ -2,8 +2,11 @@
  * @author holyhigh
  */
 import { each } from 'myfx/collection'
+import {closest} from 'myfx/tree'
+import {noop} from 'myfx/utils'
 
-import CRUD, { crudError, RestUrl } from 'cruda'
+
+import CRUD, { crudError, RestUrl,_newCrud,_newCruds, _onHook} from 'cruda'
 import * as packageInfo from '../package.json'
 
 let globalVue: Record<string, any>
@@ -18,15 +21,10 @@ export function useCrud(
   vm: Record<string, any>,
   restURL: string | RestUrl
 ): CRUD {
-  const $crud = globalVue.observable(new CRUD(restURL))
+  const $crud = globalVue.observable(_newCrud(restURL,vm))
 
   //crud入口标识
   vm.$isCrudEntry = true
-
-  Object.defineProperty($crud, 'vm', {
-    value: vm,
-    enumerable: false,
-  })
 
   return $crud as CRUD
 }
@@ -34,32 +32,35 @@ export function useCrud(
 /**
  * 创建crud多实例入口并绑定指定的vm(需要crud的vue组件)
  * @param {object} vm 需要使用crud的组件实例
- * @param {Record<string, string | RestUrl>} restURLMap restURL配置对象
+ * @param {Record<string, string | RestUrl>} restURL restURL配置对象
  * @return {Record<string, CRUD>} $cruds
  */
 export function useCruds(
   vm: Record<string, any>,
-  restURLMap: Record<string, string | RestUrl>
+  restURL: Record<string, string | RestUrl>
 ): Record<string, CRUD> {
-  const $cruds: Record<string, CRUD> = {}
-  each(restURLMap, (v: RestUrl | string, k: string) => {
-    const $crud = globalVue.observable(new CRUD(v))
-    Object.defineProperty($crud, 'vm', {
-      value: vm as Record<string, any>,
-      enumerable: false,
-    })
-
-    $cruds[k] = $crud as CRUD
-  })
-  Object.defineProperty(vm, '_cruds', {
-    value: $cruds,
-    enumerable: false,
-  })
+  const $cruds: Record<string, CRUD> = globalVue.observable(_newCruds(restURL,vm))
 
   //crud入口标识
   vm.$isCrudEntry = true
 
   return $cruds
+}
+
+/**
+ * 用于注册钩子
+ * @param {string} hookName 钩子名称
+ * @param {Function} hook 回调函数
+ * @returns 移除钩子的函数
+ */
+export function onHook(
+  vm: Record<string, any>,
+  hookName: string,
+  hook: (crud: CRUD, ...args: any[]) => void
+): ()=>void {
+  let crudVM = closest(vm,(node: Record<any, any>)=>!!node.__crud_nid_,'$parent')
+  if(!crudVM)return noop
+  return _onHook(crudVM.__crud_nid_,hookName,hook,vm)
 }
 
 /**
@@ -73,24 +74,18 @@ export function lookUpCrud(
   vm: Record<string, any>,
   crudName?: string
 ): CRUD | null {
-  let parent = vm
-  let crud: CRUD | null = null
-  while (parent) {
-    if (parent.$crud) {
-      crud = parent.$crud as CRUD
-      break
-    } else if (parent.$cruds) {
-      if (!crudName) {
-        crudError(`Must specify 'crudName' when multiple instances detected`)
-        return crud
-      }
-      crud = parent.$cruds[crudName] as CRUD
-      break
+  let crudVM = closest(vm,(node: Record<any, any>)=>!!node.__crud_nid_,'$parent')
+  if(!crudVM)return crudVM
+
+  if(crudVM.__cruds_){
+    if (!crudName) {
+      crudError(`Must specify 'crudName' when multiple instances detected`)
+      return null
     }
-    parent = parent.$parent
+    return crudVM.__cruds_[crudName]
   }
 
-  return crud
+  return crudVM.__crud_
 }
 
 CRUD.install = function (Vue: Record<string, any>, options) {
@@ -109,29 +104,22 @@ CRUD.install = function (Vue: Record<string, any>, options) {
       const crud = this.$options.crud
       const cruds = this.$options.cruds
       if (crud || cruds) {
-        const crudMap: Record<string, any> = {}
         if (crud) {
-          this.$crud = Vue.observable(new CRUD(crud))
-          crudMap['default'] = this.$crud
+          this.$crud = Vue.observable(_newCrud(crud,this))
         } else {
-          each(cruds, (v: any, k: string) => {
-            try {
-              crudMap[k] = Vue.observable(new CRUD(v))
-            } catch (error) {
-              crudError(error.message, ",'" + k + "'")
-            }
-          })
-          this.$cruds = crudMap
+          this.$cruds = Vue.observable(_newCruds(cruds,this))
         }
         //crud入口标识
         this.$isCrudEntry = true
 
-        each(crudMap, (crud: CRUD) => {
-          Object.defineProperty(crud, 'vm', {
-            value: this,
-            enumerable: false,
-          })
+        //onHook
+        const methods = this.constructor.options.methods
+        each(CRUD.HOOK,hookName=>{
+          if(methods[hookName]){
+            _onHook(this.__crud_nid_,hookName,methods[hookName],this)
+          }
         })
+        
       }
     },
   })

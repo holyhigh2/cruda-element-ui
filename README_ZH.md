@@ -76,7 +76,7 @@ const $cruds = useCruds(vm, restURL)
 ### 4. HOOK
 ```js
 //CRUD提供多种回调钩子以满足不同的业务场景
-import CRUD from 'cruda-element-ui'
+import CRUD,{onHook} from 'cruda-element-ui'
 
 export default {
   crud: '/api/users',
@@ -88,6 +88,10 @@ export default {
     }
   }
   ...
+  onMounted(){
+    //添加额外钩子
+    onHook(this,CRUD.HOOK.AFTER_QUERY,(crud, rs)=>{...})
+  }
 }
 ```
 ### 5. 自定义组件
@@ -172,6 +176,8 @@ import CRUD,{...} from 'cruda-element-ui'
   > 创建一个 crud 多实例入口并绑定指定的 vm(vue 组件)
 - lookUpCrud(vm,crudName?) : CRUD | null
   > 向上查找最近的 crud 实例
+- onHook(vm,hookName,hook) : ()=>void
+  > 添加一个额外钩子，返回取消函数
 
 ## Cruda
 CRUD相关API请前往[Cruda](https://github.com/holyhigh2/cruda)

@@ -81,6 +81,10 @@ export default {
     }
   }
   ...
+  onMounted(){
+    //Add an extra hook
+    onHook(this,CRUD.HOOK.AFTER_QUERY,(crud, rs)=>{...})
+  }
 }
 ```
 ### 5. CRUD component
@@ -161,6 +165,8 @@ import CRUD,{...} from 'cruda-element-ui'
   > return a multi instance map 
 - lookUpCrud(vm, crudName?) : CRUD | null
   > look up the nearest crud instance then return
+- onHook(vm,hookName,hook) : ()=>void
+  > add an extra hook
 
 ## Cruda
 CRUD API please to [Cruda](https://github.com/holyhigh2/cruda)
