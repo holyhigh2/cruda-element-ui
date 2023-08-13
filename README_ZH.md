@@ -135,6 +135,10 @@ export default {
           this.$crud.reload()
         })
       },
+      //使用lookUpCrud时会自动注册context的methods中的CRUD钩子
+      [CRUD.HOOK.AFTER_QUERY](crud, rs) {
+        ...
+      }
     },
   }
 </script>

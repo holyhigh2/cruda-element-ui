@@ -1,11 +1,10 @@
 {
   "name": "cruda-element-ui",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A Cruda adapter for element-ui",
   "main": "index.js",
   "module": "index.js",
   "types": "index.d.ts",
-  "type": "module",
   "author": "holyhigh2",
   "license": "MIT",
   "repository": {
@@ -26,22 +25,22 @@
   ],
   "scripts": {
     "lint": "eslint src/**",
-    "build": "rollup --config"    
+    "build": "rollup --config"
   },
   "peerDependencies": {
-    "myfx": ">=1.x",
-    "cruda":">=1.2"
+    "cruda": ">=1.2",
+    "myfx": ">=1.x"
   },
   "devDependencies": {
-    "myfx":"1.0.3",
     "@babel/preset-typescript": "^7.18.6",
     "@rollup/plugin-json": "4.1.0",
     "@rollup/plugin-node-resolve": "14.1.0",
-    "@rollup/plugin-terser":"0.4.0",
+    "@rollup/plugin-terser": "0.4.0",
     "@typescript-eslint/eslint-plugin": "5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
     "eslint": "8.23.1",
     "eslint-config-prettier": "^8.5.0",
+    "myfx": "1.0.3",
     "prettier": "^2.8.3",
     "rollup-plugin-banner2": "1.2.2",
     "rollup-plugin-clear": "2.0.7",

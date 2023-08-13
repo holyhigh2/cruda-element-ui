@@ -126,6 +126,10 @@ The first thing you create a CRUD component is to get `$crud`. Use `lookUpCrud()
           this.$crud.reload()
         })
       },
+      //This hook will register automaticly when 'lookUpCrud' method invoded
+      [CRUD.HOOK.AFTER_QUERY](crud, rs) {
+        ...
+      }
     },
   }
 </script>

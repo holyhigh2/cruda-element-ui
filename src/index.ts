@@ -3,7 +3,8 @@
  */
 import { each } from 'myfx/collection'
 import {closest} from 'myfx/tree'
-import {noop} from 'myfx/utils'
+import { noop } from 'myfx/utils'
+import { get } from 'myfx/object'
 
 
 import CRUD, { crudError, RestUrl,_newCrud,_newCruds, _onHook} from 'cruda'
@@ -74,18 +75,28 @@ export function lookUpCrud(
   vm: Record<string, any>,
   crudName?: string
 ): CRUD | null {
-  let crudVM = closest(vm,(node: Record<any, any>)=>!!node.__crud_nid_,'$parent')
-  if(!crudVM)return crudVM
+  let crudInstance = closest(vm, (node: Record<any, any>) => node.$crud || node.$cruds,'$parent')
+  if (!crudInstance) return crudInstance
 
-  if(crudVM.__cruds_){
+  let crudEntry = closest(vm, (node: Record<any, any>) => !!node.__crud_nid_, '$parent')
+
+  //onHook
+  const methods = get<Record<string, any>>(vm,'constructor.options.methods')
+  each(CRUD.HOOK, hookName => {
+    if (methods[hookName]) {
+      _onHook(crudEntry!.__crud_nid_, hookName, methods[hookName], vm)
+    }
+  })
+
+  if (crudInstance.$cruds){
     if (!crudName) {
       crudError(`Must specify 'crudName' when multiple instances detected`)
       return null
     }
-    return crudVM.__cruds_[crudName]
+    return crudInstance.$cruds[crudName]
   }
 
-  return crudVM.__crud_
+  return crudInstance.$crud
 }
 
 CRUD.install = function (Vue: Record<string, any>, options) {
@@ -119,7 +130,6 @@ CRUD.install = function (Vue: Record<string, any>, options) {
             _onHook(this.__crud_nid_,hookName,methods[hookName],this)
           }
         })
-        
       }
     },
   })
