@@ -1,0 +1,5 @@
+src/assets
+src/i18n
+public
+dist
+node_modules

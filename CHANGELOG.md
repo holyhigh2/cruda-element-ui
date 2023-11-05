@@ -3,6 +3,7 @@
 ## [1.3.0] - 2023/11/4
 ### Add
 - support `recoverable`
+- examples
 
 ## [1.1.0] - 2023/7/15 ⚠️BreakChange
 ### Change

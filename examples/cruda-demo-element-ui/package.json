@@ -1,0 +1,29 @@
+{
+  "name": "sb-vue",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --port 3000",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "myfx":"1.0.3",
+    "axios": "0.27.2",
+    "cruda": "^1.1.0",
+    "cruda-element-ui": "^1.1.0",
+    "element-ui": "2.15.12",
+    "mockjs": "1.1.0",
+    "qs": "6.11.0",
+    "vue": "2.7.14"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "5.0.4",
+    "@vue/cli-plugin-eslint": "5.0.4",
+    "@vue/cli-service": "5.0.4",
+    "babel-eslint": "^10.1.0",
+    "eslint": "8.14.0",
+    "eslint-plugin-vue": "8.7.1",
+    "vue-template-compiler": "^2.7.14"
+  }
+}
