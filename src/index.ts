@@ -17,10 +17,8 @@ function watchCrud(
 ) {
   let crud = globalVue.observable(crudInstances);
 
-  //check recoverable
-  if (CRUD.defaults.recoverable) {
-    //测试直接监控crud对象里的form属性
     if (crudInstances instanceof CRUD) {
+      if (!crudInstances.recoverable) return;
       vm.$watch(
         () => {
           return crud.form;
@@ -36,6 +34,7 @@ function watchCrud(
       );
     }else {
       each(crudInstances,(crud,k)=>{
+        if (!crud.recoverable) return;
         vm.$watch(
           () => {
             return crud.form;
@@ -51,7 +50,6 @@ function watchCrud(
         );
       })
     }
-  }
 
   return crud;
 }
