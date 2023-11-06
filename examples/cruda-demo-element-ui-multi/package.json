@@ -10,8 +10,8 @@
   "dependencies": {
     "myfx":"1.0.3",
     "axios": "0.27.2",
-    "cruda": "^1.4.0",
-    "cruda-element-ui": "^1.3.0",
+    "cruda": "^1.4.1",
+    "cruda-element-ui": "^1.3.2",
     "element-ui": "2.15.12",
     "mockjs": "1.1.0",
     "qs": "6.11.0",

@@ -18,12 +18,12 @@ function watchCrud(
   let crud = globalVue.observable(crudInstances);
 
     if (crudInstances instanceof CRUD) {
-      if (!crudInstances.recoverable) return;
       vm.$watch(
         () => {
           return crud.form;
         },
         (nv:any) => {
+          if (!crudInstances.recoverable) return;
           if(crudInstances.formStatus !== 1 && crudInstances.formStatus !== 2){
             return
           }
@@ -34,12 +34,12 @@ function watchCrud(
       );
     }else {
       each(crudInstances,(crud,k)=>{
-        if (!crud.recoverable) return;
         vm.$watch(
           () => {
             return crud.form;
           },
           (nv:any) => {
+            if (!crud.recoverable) return;
             if(crud.formStatus !== 1 && crud.formStatus !== 2){
               return
             }
