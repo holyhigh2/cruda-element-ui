@@ -3,6 +3,10 @@ import { Message } from 'element-ui';
 
 // Global defaults
 export function initCRUD(CRUD) {
+
+  //注册新接口
+  CRUD.xApi('live','/live')
+
   CRUD.defaults.table.rowKey = 'id'
   CRUD.defaults.pagination.pageSize = 15
   CRUD.defaults.recoverable = true

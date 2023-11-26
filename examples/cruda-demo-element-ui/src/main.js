@@ -7,6 +7,7 @@ Vue.use(ElementUI, {
   size: 'mini',
 })
 
+// init CRUD
 import CRUD from 'cruda-element-ui'
 import { initCRUD } from './cruda.config.js'
 initCRUD(CRUD)

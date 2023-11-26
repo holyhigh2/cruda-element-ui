@@ -22,6 +22,12 @@ const multiTableData = _.map(_.range(0, 14), () => {
     domain: Random.domain()
   }
 })
+
+//xApi url
+Mock.mock(/api\/single\/live/, 'get', function(options) {
+  return 'xApi --> '+options.body
+})
+
 // Query
 Mock.mock(/api\/single\/([a-zA-Z0-9-]+)/, 'get', function(options) {
   // query details

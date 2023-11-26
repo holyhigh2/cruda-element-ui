@@ -62,6 +62,15 @@ export default {
       },
     };
   },
+  created(){
+    //xApi hooks
+    onHook(this,CRUD.HOOK.AFTER_LIVE,(crud,rs)=>{
+      console.log('xApi-->',rs.data)
+    })
+    // onHook(this,CRUD.HOOK.BEFORE_LIVE,(crud,param,cancel)=>{
+    //   cancel()
+    // })
+  },
   mounted() {
     this.$crud.reload();
     this.$crud.form = {
@@ -69,6 +78,7 @@ export default {
       email: "12"
     };
     window.xx = this.$crud
+    this.$crud.toLive({x:1,y:2});
   },
   methods: {
     // Hook
