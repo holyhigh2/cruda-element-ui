@@ -1,6 +1,6 @@
 {
   "name": "cruda-element-ui",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "A Cruda adapter for element-ui",
   "main": "index.js",
   "module": "index.js",
@@ -26,10 +26,6 @@
   "scripts": {
     "lint": "eslint src/**",
     "build": "rollup --config"
-  },
-  "peerDependencies": {
-    "cruda": ">=1.4",
-    "myfx": ">=1.x"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.18.6",
