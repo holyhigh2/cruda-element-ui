@@ -30,7 +30,7 @@ export default {
 }
 ```
 
-通过对象方式激活 CRUD 时，可以传递除 url 外的其他自定义参数。比如
+通过对象方式激活 CRUD 时，可以传递除 url及其他内置属性 外的其他自定义参数。比如
 
 ```js
 export default {
@@ -38,6 +38,10 @@ export default {
   ...
 }
 ```
+> 其他内置属性包括
+> - query
+> - restApi
+> - autoResponse 
 
 之后可通过 VM 属性`params`(read only)来获取激活参数
 

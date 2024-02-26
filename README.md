@@ -30,7 +30,7 @@ export default {
 }
 ```
 
-You can pass custom parameters to Cruda besides the URL when you activate it using API mode. Such as below
+You can pass custom parameters to Cruda besides the URL when you activate it in object form. Such as below
 ```js
 export default {
   crud: {url:'auth/users',permission:'a_b_c'}

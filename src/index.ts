@@ -4,12 +4,60 @@
 import { each } from "myfx/collection";
 import { closest } from "myfx/tree";
 import { noop } from "myfx/utils";
-import { get } from "myfx/object";
+import { get, set } from "myfx/object";
 
-import CRUD, { crudError, RestUrl, _newCrud, _newCruds, _onHook,_setUpdater,_setSnapshot } from "cruda";
+import CRUD, { crudError, RestUrl, _newCrud, _newCruds, _onHook,_setUpdater,_setSnapshot, FormValidator, callHook } from "cruda";
 import * as packageInfo from "../package.json";
+import { isArrayLike } from "myfx";
+import { size } from "myfx";
 
 let globalVue: Record<string, any>;
+
+set(
+  CRUD.prototype,
+  "submitForm",
+  async function (
+    form:
+      | FormValidator
+      | FormValidator[]
+      | (() => Promise<FormValidator | FormValidator[]>),
+    ...args: unknown[]
+  ): Promise<unknown> {
+    let validators = form;
+    if (form instanceof Function) {
+      validators = await form();
+    } else {
+      validators = form;
+    }
+    if (!isArrayLike(validators)) {
+      validators = [validators];
+    }
+
+    const invalidBreak = this.invalidBreak;
+
+    let invalidFields = [];
+    let isValid = true;
+    for (let i = 0; i < validators.length; i++) {
+      try {
+        await validators[i].validate(...args);
+      } catch (error) {
+        isValid = false;
+        invalidFields.push(error);
+        if (invalidBreak) {
+          break;
+        }
+      }
+    }
+
+    callHook(CRUD.HOOK.ON_VALIDATE, this, isValid, invalidFields);
+
+    if (size(invalidFields) > 0) {
+      return Promise.reject(invalidFields);
+    }
+
+    return this.submit(...args);
+  }
+);
 
 function watchCrud(
   crudInstances: CRUD | Record<string, CRUD>,
